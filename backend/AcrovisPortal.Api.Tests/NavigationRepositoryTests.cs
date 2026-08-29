@@ -20,7 +20,7 @@ public sealed class NavigationRepositoryTests
             item.Id == "clients" && item.Label == "Clients" && item.Path == "/clients");
         Assert.DoesNotContain(navigation, item => item.Id == "customers");
         Assert.Contains(navigation, item => item.Section == "Management");
-        Assert.Contains(navigation, item => item.Badge == "New");
+        Assert.All(navigation, item => Assert.Null(item.Badge));
     }
 
     [Fact]

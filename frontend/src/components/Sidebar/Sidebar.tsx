@@ -72,9 +72,7 @@ export function Sidebar({ items, isCollapsed, isMobileOpen, onToggle, onClose }:
               <ul>
                 {group.items.map((item) => {
                   const Icon = icons[item.icon] ?? Grid2X2
-                  const isActive = item.path === '/'
-                    ? location.pathname === '/'
-                    : location.pathname.startsWith(item.path)
+                  const isActive = location.pathname === item.path
 
                   return (
                     <li key={item.id}>

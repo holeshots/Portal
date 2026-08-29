@@ -8,11 +8,11 @@ public sealed class InMemoryNavigationRepository : INavigationRepository
     [
         new("dashboard", "Dashboard", "/", "grid", "Overview"),
         new("tickets", "Tickets", "/tickets", "activity", "Overview"),
-        new("devices", "Devices", "/devices", "shopping-bag", "Management", "12"),
+        new("devices", "Devices", "/devices", "shopping-bag", "Management"),
         new("clients", "Clients", "/clients", "users", "Management"),
-        new("microsoft365", "Microsoft 365", "/365", "package", "Management", "New"),
+        new("microsoft365", "Microsoft 365", "/365", "package", "Management"),
         new("reports", "Reports", "/reports", "bar-chart", "Workspace"),
-        new("messages", "Messages", "/messages", "message-square", "Workspace", "4"),
+        new("messages", "Messages", "/messages", "message-square", "Workspace"),
         new("settings", "Settings", "/settings", "settings", "Workspace")
     ];
 
