@@ -1,0 +1,778 @@
+/* =========================================================
+   CLIENTS PAGE THEME VARIABLES
+   ========================================================= */
+
+:root {
+    /* Page */
+    --clients-bg: #f7f9f8;
+    --clients-text-primary: #17211d;
+    --clients-text-secondary: #748079;
+    --clients-text-muted: #94a09a;
+
+    /* Cards */
+    --clients-card-bg: #ffffff;
+    --clients-card-border: #e3e8e5;
+
+    /* Inputs / table */
+    --clients-input-bg: #fafbfa;
+    --clients-table-header-bg: #fafbfa;
+    --clients-row-hover: #f8fbf9;
+    --clients-divider: #edf0ee;
+
+    /* Brand */
+    --clients-primary: #0d513f;
+    --clients-primary-hover: #083f31;
+    --clients-primary-text: #ffffff;
+
+    /* Green */
+    --clients-green-bg: #e4f6ef;
+    --clients-green-text: #148663;
+
+    /* Yellow */
+    --clients-yellow-bg: #fff5db;
+    --clients-yellow-text: #a47614;
+
+    /* Blue */
+    --clients-blue-bg: #e8f4f8;
+    --clients-blue-text: #267a96;
+
+    /* Neutral */
+    --clients-neutral-bg: #f0f2f1;
+    --clients-neutral-text: #818a85;
+
+    /* Shadows */
+    --clients-shadow: 0 1px 2px rgba(18, 38, 30, 0.03);
+}
+
+
+/* =========================================================
+   DARK THEME
+   ========================================================= */
+
+[data-theme='dark'] {
+    /* Page */
+    --clients-bg: #101513;
+    --clients-text-primary: #edf4f1;
+    --clients-text-secondary: #a0aca6;
+    --clients-text-muted: #78847e;
+
+    /* Cards */
+    --clients-card-bg: #171e1b;
+    --clients-card-border: #28322e;
+
+    /* Inputs / table */
+    --clients-input-bg: #1b231f;
+    --clients-table-header-bg: #1a211e;
+    --clients-row-hover: #1c2823;
+    --clients-divider: #28312d;
+
+    /* Brand */
+    --clients-primary: #55c6a3;
+    --clients-primary-hover: #6bd5b4;
+    --clients-primary-text: #0b1813;
+
+    /* Green */
+    --clients-green-bg: #17392e;
+    --clients-green-text: #68d6b0;
+
+    /* Yellow */
+    --clients-yellow-bg: #3b321c;
+    --clients-yellow-text: #e7bd60;
+
+    /* Blue */
+    --clients-blue-bg: #193640;
+    --clients-blue-text: #69c1dd;
+
+    /* Neutral */
+    --clients-neutral-bg: #29312e;
+    --clients-neutral-text: #adb6b2;
+
+    /* Shadows */
+    --clients-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+
+/* =========================================================
+   PAGE
+   ========================================================= */
+
+.clients-page {
+    padding: 34px;
+    min-height: 100vh;
+    border-radius: 20px;
+
+    background: var(--clients-bg);
+    color: var(--clients-text-primary);
+}
+
+
+/* =========================================================
+   HEADER
+   ========================================================= */
+
+.clients-header {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+
+    margin-bottom: 28px;
+}
+
+.page-eyebrow {
+    margin: 0 0 8px;
+
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.4px;
+
+    color: var(--clients-text-muted);
+}
+
+.clients-header h1 {
+    margin: 0;
+
+    font-size: 30px;
+    font-weight: 650;
+    letter-spacing: -0.8px;
+
+    color: var(--clients-text-primary);
+}
+
+.page-description {
+    margin: 7px 0 0;
+
+    font-size: 14px;
+
+    color: var(--clients-text-secondary);
+}
+
+
+/* =========================================================
+   ADD CLIENT BUTTON
+   ========================================================= */
+
+.add-client-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    padding: 11px 17px;
+
+    border: none;
+    border-radius: 9px;
+
+    background: var(--clients-primary);
+    color: var(--clients-primary-text);
+
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.add-client-button:hover {
+    background: var(--clients-primary-hover);
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   STATS
+   ========================================================= */
+
+.client-stats {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+}
+
+.stat-card {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+
+    min-height: 98px;
+
+    padding: 20px;
+
+    background: var(--clients-card-bg);
+
+    border: 1px solid var(--clients-card-border);
+    border-radius: 12px;
+
+    box-shadow: var(--clients-shadow);
+
+}
+
+.stat-icon {
+    width: 43px;
+    height: 43px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    flex-shrink: 0;
+}
+
+.stat-icon.green {
+    background: var(--clients-green-bg);
+    color: var(--clients-green-text);
+}
+
+.stat-icon.yellow {
+    background: var(--clients-yellow-bg);
+    color: var(--clients-yellow-text);
+}
+
+.stat-icon.blue {
+    background: var(--clients-blue-bg);
+    color: var(--clients-blue-text);
+}
+
+.stat-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    margin-bottom: 2px;
+
+    color: var(--clients-text-secondary);
+
+    font-size: 12px;
+}
+
+.stat-value {
+    font-size: 22px;
+    line-height: 1.2;
+    font-weight: 650;
+
+    color: var(--clients-text-primary);
+}
+
+.stat-footer {
+    margin-top: 4px;
+
+    font-size: 11px;
+
+    color: var(--clients-text-muted);
+}
+
+
+/* =========================================================
+   CLIENTS CARD
+   ========================================================= */
+
+.clients-card {
+    overflow: hidden;
+
+    background: var(--clients-card-bg);
+
+    border: 1px solid var(--clients-card-border);
+    border-radius: 12px;
+
+    box-shadow: var(--clients-shadow);
+
+}
+
+
+/* =========================================================
+   TOOLBAR
+   ========================================================= */
+
+.clients-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 22px 24px;
+
+    border-bottom: 1px solid var(--clients-divider);
+}
+
+.clients-toolbar h2 {
+    margin: 0;
+
+    font-size: 17px;
+    font-weight: 650;
+
+    color: var(--clients-text-primary);
+}
+
+.clients-toolbar p {
+    margin: 4px 0 0;
+
+    color: var(--clients-text-muted);
+
+    font-size: 12px;
+}
+
+.client-actions {
+    display: flex;
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* =========================================================
+   SEARCH
+   ========================================================= */
+
+.client-search {
+    display: flex;
+    align-items: center;
+
+    gap: 8px;
+
+    width: 250px;
+
+    padding: 0 12px;
+
+    border: 1px solid var(--clients-card-border);
+    border-radius: 8px;
+
+    background: var(--clients-input-bg);
+    color: var(--clients-text-secondary);
+
+}
+
+.client-search:focus-within {
+    border-color: var(--clients-primary);
+}
+
+.client-search input {
+    width: 100%;
+    height: 38px;
+
+    border: none;
+    outline: none;
+
+    background: transparent;
+
+    font-size: 13px;
+
+    color: var(--clients-text-primary);
+}
+
+.client-search input::placeholder {
+    color: var(--clients-text-muted);
+}
+
+
+/* =========================================================
+   STATUS FILTER
+   ========================================================= */
+
+.status-filter {
+    height: 40px;
+
+    padding: 0 33px 0 12px;
+
+    border: 1px solid var(--clients-card-border);
+    border-radius: 8px;
+
+    background: var(--clients-input-bg);
+    color: var(--clients-text-secondary);
+
+    font-size: 13px;
+
+    cursor: pointer;
+}
+
+.status-filter:focus {
+    outline: none;
+    border-color: var(--clients-primary);
+}
+
+
+/* =========================================================
+   TABLE
+   ========================================================= */
+
+.clients-table-wrapper {
+    width: 100%;
+
+    overflow-x: auto;
+}
+
+.clients-table {
+    width: 100%;
+
+    border-collapse: collapse;
+}
+
+.clients-table th {
+    padding: 13px 18px;
+
+    text-align: left;
+
+    background: var(--clients-table-header-bg);
+
+    color: var(--clients-text-muted);
+
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.7px;
+
+    border-bottom: 1px solid var(--clients-divider);
+}
+
+.clients-table td {
+    padding: 15px 18px;
+
+    border-bottom: 1px solid var(--clients-divider);
+
+    font-size: 13px;
+
+    vertical-align: middle;
+
+    color: var(--clients-text-primary);
+}
+
+.clients-table tbody tr {
+    cursor: pointer;
+
+}
+
+.clients-table tbody tr:hover {
+    background: var(--clients-row-hover);
+}
+
+.clients-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+
+/* =========================================================
+   CLIENT COMPANY
+   ========================================================= */
+
+.client-company {
+    display: flex;
+    align-items: center;
+
+    gap: 11px;
+
+    min-width: 190px;
+}
+
+.client-avatar {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background: var(--clients-green-bg);
+    color: var(--clients-green-text);
+
+    font-size: 12px;
+    font-weight: 700;
+
+    flex-shrink: 0;
+}
+
+.client-name {
+    font-weight: 600;
+
+    color: var(--clients-text-primary);
+}
+
+.client-domain {
+    margin-top: 3px;
+
+    color: var(--clients-text-muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CONTACT
+   ========================================================= */
+
+.contact-name {
+    font-weight: 500;
+
+    color: var(--clients-text-primary);
+}
+
+.contact-email {
+    margin-top: 3px;
+
+    color: var(--clients-text-muted);
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   CLIENT STATUS
+   ========================================================= */
+
+.client-status {
+    display: inline-flex;
+    align-items: center;
+
+    gap: 6px;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+
+    border-radius: 50%;
+}
+
+
+/* ACTIVE */
+
+.client-status.active {
+    color: var(--clients-green-text);
+}
+
+.client-status.active .status-dot {
+    background: var(--clients-green-text);
+}
+
+
+/* ONBOARDING */
+
+.client-status.onboarding {
+    color: var(--clients-yellow-text);
+}
+
+.client-status.onboarding .status-dot {
+    background: var(--clients-yellow-text);
+}
+
+
+/* INACTIVE */
+
+.client-status.inactive {
+    color: var(--clients-neutral-text);
+}
+
+.client-status.inactive .status-dot {
+    background: var(--clients-neutral-text);
+}
+
+
+/* =========================================================
+   MICROSOFT STATUS
+   ========================================================= */
+
+.microsoft-status {
+    display: inline-flex;
+
+    padding: 5px 9px;
+
+    border-radius: 20px;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+/* CONNECTED */
+
+.microsoft-status.connected {
+    color: var(--clients-green-text);
+    background: var(--clients-green-bg);
+}
+
+
+/* ATTENTION */
+
+.microsoft-status.attention {
+    color: var(--clients-yellow-text);
+    background: var(--clients-yellow-bg);
+}
+
+
+/* NOT CONNECTED */
+
+.microsoft-status.not-connected {
+    color: var(--clients-neutral-text);
+    background: var(--clients-neutral-bg);
+}
+
+
+/* =========================================================
+   METRICS
+   ========================================================= */
+
+.metric-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 7px;
+
+    color: var(--clients-text-secondary);
+}
+
+.activity-cell {
+    display: flex;
+    align-items: center;
+
+    gap: 6px;
+
+    color: var(--clients-text-muted);
+
+    font-size: 12px;
+
+    white-space: nowrap;
+}
+
+
+/* =========================================================
+   TABLE ACTIONS
+   ========================================================= */
+
+.table-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.more-button {
+    width: 30px;
+    height: 30px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: none;
+    border-radius: 7px;
+
+    background: transparent;
+
+    color: var(--clients-text-muted);
+
+    cursor: pointer;
+
+}
+
+.more-button:hover {
+    background: var(--clients-row-hover);
+    color: var(--clients-text-primary);
+}
+
+.row-arrow {
+    color: var(--clients-text-muted);
+}
+
+
+/* =========================================================
+   EMPTY STATE
+   ========================================================= */
+
+.empty-clients {
+    padding: 70px 20px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    text-align: center;
+
+    color: var(--clients-text-muted);
+}
+
+.empty-clients h3 {
+    margin: 14px 0 4px;
+
+    color: var(--clients-text-primary);
+
+    font-size: 15px;
+}
+
+.empty-clients p {
+    margin: 0;
+
+    font-size: 12px;
+}
+
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+.clients-table-wrapper::-webkit-scrollbar {
+    height: 7px;
+}
+
+.clients-table-wrapper::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.clients-table-wrapper::-webkit-scrollbar-thumb {
+    background: var(--clients-card-border);
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   RESPONSIVE
+   ========================================================= */
+
+@media (max-width: 1100px) {
+    .client-stats {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .clients-toolbar {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 20px;
+    }
+}
+
+
+@media (max-width: 700px) {
+    .clients-page {
+        padding: 20px;
+    }
+
+    .clients-header {
+        align-items: flex-start;
+        flex-direction: column;
+
+        gap: 20px;
+    }
+
+    .client-stats {
+        grid-template-columns: 1fr;
+    }
+
+    .client-actions {
+        width: 100%;
+
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .client-search {
+        width: auto;
+    }
+
+    .add-client-button {
+        width: 100%;
+        justify-content: center;
+    }
+}
