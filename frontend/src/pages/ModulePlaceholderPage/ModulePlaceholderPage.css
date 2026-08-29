@@ -1,0 +1,97 @@
+.module-placeholder-page {
+  width: 100%;
+  max-width: 780px;
+  min-height: 420px;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: center;
+  padding: clamp(28px, 6vw, 64px);
+  overflow: hidden;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 16px 42px var(--shadow);
+}
+
+.module-placeholder-icon {
+  width: 56px;
+  height: 56px;
+  display: grid;
+  place-items: center;
+  color: var(--accent-dark);
+  background: var(--surface-active);
+  border: 1px solid color-mix(in srgb, var(--accent) 18%, var(--line));
+  border-radius: 13px;
+}
+
+.module-placeholder-status {
+  min-height: 29px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 24px;
+  padding: 0 9px;
+  color: var(--accent-dark);
+  background: var(--surface-active);
+  border-radius: 999px;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .65px;
+  text-transform: uppercase;
+}
+
+.module-placeholder-page h1 {
+  margin: 14px 0 10px;
+  font: 700 clamp(30px, 5vw, 42px)/1.1 'Manrope', sans-serif;
+  letter-spacing: -1.2px;
+}
+
+.module-placeholder-page > p {
+  max-width: 610px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.65;
+}
+
+.module-placeholder-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 27px;
+}
+
+.module-placeholder-link {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 15px;
+  color: var(--accent-dark);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.module-placeholder-link:hover { background: var(--surface-hover); }
+.module-placeholder-link.is-primary { color: #f0fff9; background: #0c805c; border-color: #0c805c; }
+.module-placeholder-link.is-primary:hover { background: #096e4f; }
+.module-placeholder-link:focus-visible { outline: 3px solid rgb(15 169 118 / 30%); outline-offset: 2px; }
+
+:root[data-theme='dark'] .module-placeholder-link.is-primary {
+  color: #08251d;
+  background: #62d5ac;
+  border-color: #62d5ac;
+}
+
+:root[data-theme='dark'] .module-placeholder-link.is-primary:hover { background: #7de1bc; }
+
+@media (max-width: 680px) {
+  .module-placeholder-page { min-height: 360px; border-radius: 11px; }
+  .module-placeholder-links { width: 100%; flex-direction: column; }
+  .module-placeholder-link { width: 100%; }
+}
