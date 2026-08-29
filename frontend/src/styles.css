@@ -66,10 +66,7 @@ button { color: inherit; }
 }
 .sidebar.is-collapsed { width: 88px; }
 .sidebar-brand { height: 76px; display: flex; align-items: center; gap: 11px; padding: 0 23px; border-bottom: 1px solid var(--line-soft); overflow: hidden; }
-.brand-mark { position: relative; width: 30px; height: 30px; flex: 0 0 30px; border: 3px solid var(--accent); border-radius: 10px; }
-.brand-mark::after { content: ''; position: absolute; inset: 6px 5px; border: 2px solid var(--accent); border-left: 0; border-radius: 0 5px 5px 0; }
-.brand-mark span:first-child { position: absolute; width: 10px; height: 3px; background: var(--surface); left: -4px; top: 7px; }
-.brand-mark span:last-child { position: absolute; width: 13px; height: 3px; background: var(--accent); left: -4px; bottom: 7px; }
+.brand-logo-image { width: 30px; height: 30px; display: block; flex: 0 0 30px; object-fit: contain; }
 .brand-name { font: 700 21px/1 'Manrope', sans-serif; letter-spacing: -0.7px; color: #0b8f66; white-space: nowrap; }
 .sidebar-nav { flex: 1; padding: 22px 14px; overflow-y: auto; overflow-x: hidden; }
 .nav-section { margin-bottom: 24px; }

@@ -19,12 +19,13 @@ function renderSidebar(onToggle = () => undefined, initialPath = '/') {
 
 describe('Sidebar', () => {
   it('renders grouped navigation and marks the dashboard as current', () => {
-    renderSidebar()
+    const { container } = renderSidebar()
 
     expect(screen.getByText('Overview')).toBeInTheDocument()
     expect(screen.getByText('Management')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page')
     expect(screen.getByText('12')).toBeInTheDocument()
+    expect(container.querySelector('.brand-logo-image')).toHaveAttribute('alt', '')
   })
 
   it('exposes an accessible collapse control', () => {
