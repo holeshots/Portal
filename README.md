@@ -4,7 +4,7 @@ A responsive MSP operations portal demo inspired by the Dasher layout. The curre
 
 ## Dashboard preview
 
-![Acrivos Portal dashboard showing the branded navigation, workspace summary, and priority activity](docs/images/dashboard-preview.png)
+![Acrivos Portal dashboard showing the branded navigation, workspace summary, and priority activity](docs/images/dashboard-preview.jpg)
 
 ## Demo scope
 
