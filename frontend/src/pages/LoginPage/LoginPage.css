@@ -40,42 +40,6 @@
   letter-spacing: -0.65px;
 }
 
-.login-brand-mark {
-  position: relative;
-  width: 30px;
-  height: 30px;
-  flex: 0 0 30px;
-  border: 3px solid var(--accent);
-  border-radius: 10px;
-}
-
-.login-brand-mark::after {
-  content: '';
-  position: absolute;
-  inset: 6px 5px;
-  border: 2px solid var(--accent);
-  border-left: 0;
-  border-radius: 0 5px 5px 0;
-}
-
-.login-brand-mark span:first-child {
-  position: absolute;
-  top: 7px;
-  left: -4px;
-  width: 10px;
-  height: 3px;
-  background: currentColor;
-}
-
-.login-brand-mark span:last-child {
-  position: absolute;
-  bottom: 7px;
-  left: -4px;
-  width: 13px;
-  height: 3px;
-  background: var(--accent);
-}
-
 .login-brand-on-dark { color: #ecfff8; }
 
 .login-story-copy {

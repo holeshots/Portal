@@ -1,6 +1,7 @@
 import { useRef, useState, type FormEvent } from 'react'
 import { Eye, EyeOff, LockKeyhole, ShieldCheck } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import acrivosLogo from '../../assets/acrivos-logo-icon.webp'
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle'
 import { completeDemoSignIn } from './demoLogin'
 import './LoginPage.css'
@@ -59,7 +60,14 @@ export function LoginPage() {
       <section className="login-story" aria-label="Acrivos Portal introduction">
         <div className="login-story-content">
           <div className="login-brand login-brand-on-dark">
-            <span className="login-brand-mark" aria-hidden="true"><span /><span /></span>
+            <img
+              className="brand-logo-image"
+              src={acrivosLogo}
+              alt=""
+              aria-hidden="true"
+              width="2048"
+              height="2048"
+            />
             <span>Acrivos Portal</span>
           </div>
           <div className="login-story-copy">
@@ -76,7 +84,14 @@ export function LoginPage() {
       <section className="login-panel" aria-labelledby="login-title">
         <div className="login-panel-header">
           <div className="login-brand login-brand-compact">
-            <span className="login-brand-mark" aria-hidden="true"><span /><span /></span>
+            <img
+              className="brand-logo-image"
+              src={acrivosLogo}
+              alt=""
+              aria-hidden="true"
+              width="2048"
+              height="2048"
+            />
             <span>Acrivos Portal</span>
           </div>
           <ThemeToggle className="login-theme-toggle" />

@@ -22,7 +22,7 @@ describe('LoginPage', () => {
   })
 
   it('renders a focused login experience with persistent field labels', () => {
-    renderLogin()
+    const { container } = renderLogin()
 
     expect(screen.getByRole('heading', { name: 'Sign in to your workspace' })).toBeInTheDocument()
     expect(screen.getByLabelText('Work email')).toHaveAttribute('autocomplete', 'email')
@@ -31,6 +31,8 @@ describe('LoginPage', () => {
     expect(screen.getByRole('button', { name: 'Forgot password?' })).toBeInTheDocument()
     expect(screen.queryByRole('navigation', { name: 'Primary navigation' })).not.toBeInTheDocument()
     expect(screen.queryByRole('button', { name: 'Notifications' })).not.toBeInTheDocument()
+    expect(container.querySelectorAll('.brand-logo-image')).toHaveLength(2)
+    expect(container.querySelector('.brand-logo-image')).toHaveAttribute('alt', '')
   })
 
   it('shows actionable required-field errors and focuses the first invalid field', async () => {

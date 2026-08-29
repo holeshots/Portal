@@ -14,6 +14,7 @@ import {
   type LucideIcon,
 } from 'lucide-react'
 import { groupNavigation } from '../../lib/groupNavigation'
+import acrivosLogo from '../../assets/acrivos-logo-icon.webp'
 import type { NavigationItem } from '../../types/navigation'
 
 interface SidebarProps {
@@ -55,10 +56,14 @@ export function Sidebar({ items, isCollapsed, isMobileOpen, onToggle, onClose }:
       />
       <aside className={`sidebar ${isCollapsed ? 'is-collapsed' : ''} ${isMobileOpen ? 'is-open' : ''}`}>
         <div className="sidebar-brand">
-          <div className="brand-mark" aria-hidden="true">
-            <span />
-            <span />
-          </div>
+          <img
+            className="brand-logo-image"
+            src={acrivosLogo}
+            alt=""
+            aria-hidden="true"
+            width="2048"
+            height="2048"
+          />
           <span className="brand-name">Acrivos Portal</span>
           <button className="mobile-close" aria-label="Close navigation" onClick={onClose}>
             <X size={20} />
