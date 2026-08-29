@@ -1,0 +1,6 @@
+@AcrovisPortal.Api_HostAddress = http://localhost:5026
+
+GET {{AcrovisPortal.Api_HostAddress}}/api/navigation
+Accept: application/json
+
+###

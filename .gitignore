@@ -1,0 +1,20 @@
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/*.tsbuildinfo
+
+# .NET
+**/bin/
+**/obj/
+
+# Local configuration
+.env
+.env.local
+*.user
+*.suo
+.vs/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
