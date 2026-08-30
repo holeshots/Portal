@@ -1,6 +1,7 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 import { MemoryRouter } from 'react-router-dom'
+import { AuthenticationContext, type AuthenticationContextValue } from '../../auth/AuthContext'
 import type { NavigationItem } from '../../types/navigation'
 import { Sidebar } from './Sidebar'
 
@@ -9,11 +10,21 @@ const items: NavigationItem[] = [
   { id: 'orders', label: 'Orders', path: '/orders', icon: 'shopping-bag', section: 'Management', badge: '12' },
 ]
 
+const authentication: AuthenticationContextValue = {
+  status: 'authenticated',
+  account: { name: 'Alex Morgan', username: 'alex.morgan@example.com' },
+  error: null,
+  signIn: vi.fn().mockResolvedValue(undefined),
+  signOut: vi.fn().mockResolvedValue(undefined),
+}
+
 function renderSidebar(onToggle = () => undefined, initialPath = '/') {
   return render(
-    <MemoryRouter initialEntries={[initialPath]}>
-      <Sidebar items={items} isCollapsed={false} isMobileOpen onToggle={onToggle} onClose={() => undefined} />
-    </MemoryRouter>,
+    <AuthenticationContext.Provider value={authentication}>
+      <MemoryRouter initialEntries={[initialPath]}>
+        <Sidebar items={items} isCollapsed={false} isMobileOpen onToggle={onToggle} onClose={() => undefined} />
+      </MemoryRouter>
+    </AuthenticationContext.Provider>,
   )
 }
 
@@ -25,6 +36,8 @@ describe('Sidebar', () => {
     expect(screen.getByText('Management')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'Dashboard' })).toHaveAttribute('aria-current', 'page')
     expect(screen.getByText('12')).toBeInTheDocument()
+    expect(screen.getByText('Alex Morgan')).toBeInTheDocument()
+    expect(screen.getByText('alex.morgan@example.com')).toBeInTheDocument()
     expect(container.querySelector('.brand-logo-image')).toHaveAttribute('alt', '')
   })
 

@@ -1,4 +1,5 @@
 import { Route, Routes } from 'react-router-dom'
+import { RequireAuthentication } from './auth/RequireAuthentication'
 import { PortalLayout } from './layouts/PortalLayout'
 import { DashboardPage } from './pages/DashboardPage'
 import { LoginPage } from './pages/LoginPage/LoginPage'
@@ -13,18 +14,20 @@ export default function App() {
   return (
     <Routes>
       <Route path="/login" element={<LoginPage />} />
-      <Route element={<PortalLayout />}>
-        <Route index element={<DashboardPage />} />
-        <Route path="tickets" element={<TicketsPage />} />
-        <Route path="clients" element={<ClientsPage />} />
-        {MODULE_PLACEHOLDERS.map((module) => (
-          <Route
-            key={module.path}
-            path={module.path.slice(1)}
-            element={<ModulePlaceholderPage module={module} />}
-          />
-        ))}
-        <Route path="*" element={<PageNotFoundPage />} />
+      <Route element={<RequireAuthentication />}>
+        <Route element={<PortalLayout />}>
+          <Route index element={<DashboardPage />} />
+          <Route path="tickets" element={<TicketsPage />} />
+          <Route path="clients" element={<ClientsPage />} />
+          {MODULE_PLACEHOLDERS.map((module) => (
+            <Route
+              key={module.path}
+              path={module.path.slice(1)}
+              element={<ModulePlaceholderPage module={module} />}
+            />
+          ))}
+          <Route path="*" element={<PageNotFoundPage />} />
+        </Route>
       </Route>
     </Routes>
   )

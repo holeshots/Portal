@@ -13,6 +13,7 @@ import {
   X,
   type LucideIcon,
 } from 'lucide-react'
+import { getAccountDisplayName, getAccountInitials, useAuthentication } from '../../auth/AuthContext'
 import { groupNavigation } from '../../lib/groupNavigation'
 import acrivosLogo from '../../assets/acrivos-logo-icon.webp'
 import type { NavigationItem } from '../../types/navigation'
@@ -37,6 +38,9 @@ const icons: Record<string, LucideIcon> = {
 }
 
 export function Sidebar({ items, isCollapsed, isMobileOpen, onToggle, onClose }: SidebarProps) {
+  const { account } = useAuthentication()
+  const displayName = getAccountDisplayName(account)
+  const initials = getAccountInitials(account)
   const location = useLocation()
   const navigate = useNavigate()
   const groups = groupNavigation(items)
@@ -101,10 +105,10 @@ export function Sidebar({ items, isCollapsed, isMobileOpen, onToggle, onClose }:
         </nav>
 
         <div className="sidebar-footer">
-          <div className="user-avatar" aria-hidden="true">JT</div>
+          <div className="user-avatar" aria-hidden="true">{initials}</div>
           <div className="user-details">
-            <strong>Jed Turqueza</strong>
-            <span>MSP Administrator</span>
+            <strong>{displayName}</strong>
+            <span>{account?.username}</span>
           </div>
           <span className="status-dot" title="Online" />
         </div>

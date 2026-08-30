@@ -1,6 +1,6 @@
 # Acrivos Portal
 
-A responsive MSP operations portal demo inspired by the Dasher layout. The current experience includes the portal shell, a UI-only login page, and a simulated Ticketing workspace. Charting and production integrations are intentionally omitted.
+A responsive MSP operations portal demo inspired by the Dasher layout. The current experience includes the portal shell, Microsoft sign-in, and a simulated Ticketing workspace. Charting and production integrations are intentionally omitted.
 
 ## Dashboard preview
 
@@ -8,14 +8,15 @@ A responsive MSP operations portal demo inspired by the Dasher layout. The curre
 
 ## Demo scope
 
-- `/login` validates the form in the browser and routes to the portal; it does not authenticate a user or create a session.
+- `/login` uses Microsoft Authentication Library (MSAL) redirect sign-in for work, school, and personal Microsoft accounts.
+- Portal routes require an MSAL account in the browser. This client-side route boundary improves navigation but does not replace server-side authorization.
 - `/tickets` uses realistic in-memory data. Search and filters, ticket details, assignment/status/severity changes, and internal notes are simulated and reset on refresh.
 - The ASP.NET Core API currently supplies portal navigation only. Tickets are not persisted or sent to the API.
-- Authentication, authorization, a database, attachments, notifications, SLA calculations, vendor integrations, and real-time updates are future production work.
+- API authorization, a database, attachments, notifications, SLA calculations, vendor integrations, and real-time updates are future production work.
 
 ## Stack
 
-- React 19, TypeScript, Vite, and Lucide icons
+- React 19, TypeScript, Vite, MSAL, and Lucide icons
 - ASP.NET Core 9 Web API
 - Repository pattern through `INavigationRepository`
 - xUnit and Vitest/React Testing Library
@@ -33,10 +34,21 @@ In another terminal, start the frontend:
 ```powershell
 cd frontend
 npm install
+Copy-Item .env.example .env.local
 npm run dev
 ```
 
 Open `http://localhost:5173`. Vite proxies `/api` to the API at `http://localhost:5026`.
+
+### Microsoft Entra setup
+
+Register a single-page application in Microsoft Entra and configure it to support organizational directories and personal Microsoft accounts. Add `http://localhost:5173` as a SPA redirect URI, then set its public Application (client) ID in `frontend/.env.local`:
+
+```dotenv
+VITE_MSAL_CLIENT_ID=your-application-client-id
+```
+
+The frontend uses the Microsoft `common` authority, redirect-based sign-in, and `sessionStorage`. The client ID is public configuration; do not add a client secret. Phase 1 does not request Microsoft Graph data or send Microsoft tokens to the Acrivos API.
 
 ## Verify
 

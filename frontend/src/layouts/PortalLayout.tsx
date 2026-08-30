@@ -1,10 +1,12 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useAuthentication } from '../auth/AuthContext'
 import { Header } from '../components/Header/Header'
 import { Sidebar } from '../components/Sidebar/Sidebar'
 import type { NavigationItem } from '../types/navigation'
 
 export function PortalLayout() {
+  const { error: authenticationError } = useAuthentication()
   const [items, setItems] = useState<NavigationItem[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
@@ -42,6 +44,11 @@ export function PortalLayout() {
       <div className="app-column">
         <Header onOpenMenu={() => setIsMobileOpen(true)} />
         <main className="main-content">
+          {authenticationError && (
+            <div className="navigation-state is-error" role="alert">
+              {authenticationError}
+            </div>
+          )}
           {isLoading && (
             <div className="navigation-state" role="status">
               <span className="state-pulse" /> Loading your workspace…
