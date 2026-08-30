@@ -31,7 +31,39 @@ export function createMsalConfiguration(clientId: string, origin = window.locati
   }
 }
 
+function parseSafeReturnUrl(returnTo: string, origin: string) {
+  const portalOrigin = new URL(origin).origin
+  const fallback = new URL('/', portalOrigin)
+
+  if (!returnTo.startsWith('/') || returnTo.startsWith('//') || returnTo.includes('\\')) {
+    return fallback
+  }
+
+  const path = returnTo.split(/[?#]/, 1)[0]
+
+  if (/%(?:25)*(?:2f|5c)/i.test(path)) {
+    return fallback
+  }
+
+  try {
+    const decodedPath = decodeURIComponent(path)
+
+    if (decodedPath.startsWith('//') || decodedPath.includes('\\')) {
+      return fallback
+    }
+
+    const candidate = new URL(returnTo, portalOrigin)
+    return candidate.origin === portalOrigin ? candidate : fallback
+  } catch {
+    return fallback
+  }
+}
+
+export function toSafeReturnPath(returnTo: string, origin = window.location.origin) {
+  const safeUrl = parseSafeReturnUrl(returnTo, origin)
+  return `${safeUrl.pathname}${safeUrl.search}${safeUrl.hash}`
+}
+
 export function toSafeReturnUrl(returnTo: string, origin = window.location.origin) {
-  const safePath = returnTo.startsWith('/') && !returnTo.startsWith('//') ? returnTo : '/'
-  return new URL(safePath, origin).href
+  return parseSafeReturnUrl(returnTo, origin).href
 }

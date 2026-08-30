@@ -83,6 +83,19 @@ describe('LoginPage Microsoft sign-in boundary', () => {
     expect(screen.getByRole('button', { name: 'Redirecting to Microsoft…' })).toBeDisabled()
   })
 
+  it('falls back to the dashboard for a suspicious return path', async () => {
+    const user = userEvent.setup()
+    const signIn = vi.fn().mockResolvedValue(undefined)
+    renderLogin(
+      { ...signedOutAuthentication, signIn },
+      { pathname: '/login', state: { from: '/%5C%5Cmalicious.example/path' } },
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Continue with Microsoft' }))
+
+    expect(signIn).toHaveBeenCalledWith('/')
+  })
+
   it('supports keyboard activation and displays a cancelled or failed sign-in message', async () => {
     const user = userEvent.setup()
     const error = 'Microsoft sign-in was cancelled or could not be completed. Please try again.'

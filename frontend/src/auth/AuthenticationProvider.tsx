@@ -4,8 +4,9 @@ import {
   InteractionStatus,
   InteractionType,
   PublicClientApplication,
-  type AuthenticationResult,
+  type AccountInfo,
   type EventMessage,
+  type IPublicClientApplication,
 } from '@azure/msal-browser'
 import { MsalProvider, useMsal } from '@azure/msal-react'
 import { AuthenticationContext, type AuthenticationContextValue } from './AuthContext'
@@ -25,25 +26,28 @@ const initializationErrorMessage =
 
 interface AuthenticationProviderProps extends PropsWithChildren {
   clientId?: string
+  instance?: IPublicClientApplication
 }
 
 function MsalAuthenticationBridge({ children }: PropsWithChildren) {
   const { accounts, inProgress, instance } = useMsal()
   const [error, setError] = useState<string | null>(null)
-  const [initializationFailed, setInitializationFailed] = useState(false)
-  const account = instance.getActiveAccount() ?? accounts[0] ?? null
+  const [selectedAccount, setSelectedAccount] = useState<AccountInfo | null>(
+    () => instance.getActiveAccount(),
+  )
+  const account = selectedAccount ?? instance.getActiveAccount() ?? accounts[0] ?? null
 
   useEffect(() => {
     const callbackId = instance.addEventCallback((message: EventMessage) => {
       if (message.eventType === EventType.LOGIN_SUCCESS) {
-        const result = message.payload as AuthenticationResult | null
-        if (result?.account) instance.setActiveAccount(result.account)
-        setError(null)
-      }
+        const signedInAccount = message.payload as AccountInfo | null
 
-      if (message.eventType === EventType.INITIALIZE_END && message.error) {
-        setInitializationFailed(true)
-        setError(initializationErrorMessage)
+        if (signedInAccount) {
+          instance.setActiveAccount(signedInAccount)
+          setSelectedAccount(signedInAccount)
+        }
+
+        setError(null)
       }
 
       if (
@@ -77,8 +81,12 @@ function MsalAuthenticationBridge({ children }: PropsWithChildren) {
     setError(null)
 
     try {
+      const idTokenLogoutHint = account?.idTokenClaims?.login_hint
+      const logoutHint = account?.loginHint
+        ?? (typeof idTokenLogoutHint === 'string' ? idTokenLogoutHint : undefined)
+
       await instance.logoutRedirect({
-        account: account ?? undefined,
+        logoutHint,
         postLogoutRedirectUri: window.location.origin,
       })
     } catch {
@@ -88,9 +96,7 @@ function MsalAuthenticationBridge({ children }: PropsWithChildren) {
   }, [account, instance])
 
   const value = useMemo<AuthenticationContextValue>(() => ({
-    status: initializationFailed
-      ? 'configuration-error'
-      : inProgress === InteractionStatus.None
+    status: inProgress === InteractionStatus.None
       ? account ? 'authenticated' : 'unauthenticated'
       : 'initializing',
     account: account ? {
@@ -100,21 +106,93 @@ function MsalAuthenticationBridge({ children }: PropsWithChildren) {
     error,
     signIn,
     signOut,
-  }), [account, error, initializationFailed, inProgress, signIn, signOut])
+  }), [account, error, inProgress, signIn, signOut])
 
   return <AuthenticationContext.Provider value={value}>{children}</AuthenticationContext.Provider>
+}
+
+function MsalInitializationBoundary({
+  children,
+  instance,
+}: PropsWithChildren<{ instance: IPublicClientApplication }>) {
+  const [initializationError, setInitializationError] = useState<string | null>(null)
+  const [isReady, setIsReady] = useState(false)
+
+  useEffect(() => {
+    let isMounted = true
+
+    const initialize = async () => {
+      try {
+        await instance.initialize()
+        const redirectResult = await instance.handleRedirectPromise()
+
+        if (redirectResult?.account) {
+          instance.setActiveAccount(redirectResult.account)
+        }
+
+        if (isMounted) setIsReady(true)
+      } catch {
+        if (isMounted) setInitializationError(initializationErrorMessage)
+      }
+    }
+
+    void initialize()
+
+    return () => {
+      isMounted = false
+    }
+  }, [instance])
+
+  const errorValue = useMemo<AuthenticationContextValue>(() => ({
+    status: 'configuration-error',
+    account: null,
+    error: initializationErrorMessage,
+    signIn: async () => undefined,
+    signOut: async () => undefined,
+  }), [])
+
+  const loadingValue = useMemo<AuthenticationContextValue>(() => ({
+    status: 'initializing',
+    account: null,
+    error: null,
+    signIn: async () => undefined,
+    signOut: async () => undefined,
+  }), [])
+
+  if (initializationError) {
+    return (
+      <AuthenticationContext.Provider value={errorValue}>
+        {children}
+      </AuthenticationContext.Provider>
+    )
+  }
+
+  if (!isReady) {
+    return (
+      <AuthenticationContext.Provider value={loadingValue}>
+        {children}
+      </AuthenticationContext.Provider>
+    )
+  }
+
+  return (
+    <MsalProvider instance={instance}>
+      <MsalAuthenticationBridge>{children}</MsalAuthenticationBridge>
+    </MsalProvider>
+  )
 }
 
 export function AuthenticationProvider({
   children,
   clientId = import.meta.env.VITE_MSAL_CLIENT_ID,
+  instance: providedInstance,
 }: AuthenticationProviderProps) {
   const normalizedClientId = normalizeClientId(clientId)
   const instance = useMemo(
-    () => normalizedClientId
+    () => providedInstance ?? (normalizedClientId
       ? new PublicClientApplication(createMsalConfiguration(normalizedClientId))
-      : null,
-    [normalizedClientId],
+      : null),
+    [normalizedClientId, providedInstance],
   )
 
   const configurationErrorValue = useMemo<AuthenticationContextValue>(() => ({
@@ -125,7 +203,7 @@ export function AuthenticationProvider({
     signOut: async () => undefined,
   }), [])
 
-  if (!instance) {
+  if (!instance || (!providedInstance && !normalizedClientId)) {
     return (
       <AuthenticationContext.Provider value={configurationErrorValue}>
         {children}
@@ -134,8 +212,8 @@ export function AuthenticationProvider({
   }
 
   return (
-    <MsalProvider instance={instance}>
-      <MsalAuthenticationBridge>{children}</MsalAuthenticationBridge>
-    </MsalProvider>
+    <MsalInitializationBoundary instance={instance}>
+      {children}
+    </MsalInitializationBoundary>
   )
 }

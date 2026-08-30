@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { LockKeyhole, ShieldCheck } from 'lucide-react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthentication } from '../../auth/AuthContext'
+import { toSafeReturnPath } from '../../auth/authConfig'
 import acrivosLogo from '../../assets/acrivos-logo-icon.webp'
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle'
 import './LoginPage.css'
@@ -12,7 +13,7 @@ interface LoginLocationState {
 
 function getReturnPath(state: unknown) {
   const from = (state as LoginLocationState | null)?.from
-  return typeof from === 'string' && from.startsWith('/') && !from.startsWith('//') ? from : '/'
+  return typeof from === 'string' ? toSafeReturnPath(from) : '/'
 }
 
 export function LoginPage() {
