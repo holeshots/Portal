@@ -3,7 +3,6 @@ import { LockKeyhole, ShieldCheck } from 'lucide-react'
 import { Navigate, useLocation } from 'react-router-dom'
 import { useAuthentication } from '../../auth/AuthContext'
 import { toSafeReturnPath } from '../../auth/authConfig'
-import acrivosLogo from '../../assets/acrivos-logo-icon.webp'
 import { ThemeToggle } from '../../components/ThemeToggle/ThemeToggle'
 import './LoginPage.css'
 
@@ -38,18 +37,10 @@ export function LoginPage() {
 
   return (
     <main className="login-page">
-      <section className="login-story" aria-label="Acrivos Portal introduction">
+      <section className="login-story" aria-label="Portal Dashboard introduction">
         <div className="login-story-content">
           <div className="login-brand login-brand-on-dark">
-            <img
-              className="brand-logo-image"
-              src={acrivosLogo}
-              alt=""
-              aria-hidden="true"
-              width="2048"
-              height="2048"
-            />
-            <span>Acrivos Portal</span>
+            <span>Portal Dashboard</span>
           </div>
           <div className="login-story-copy">
             <span className="login-story-kicker"><ShieldCheck size={15} aria-hidden="true" /> Operations, in focus</span>
@@ -65,15 +56,7 @@ export function LoginPage() {
       <section className="login-panel" aria-labelledby="login-title">
         <div className="login-panel-header">
           <div className="login-brand login-brand-compact">
-            <img
-              className="brand-logo-image"
-              src={acrivosLogo}
-              alt=""
-              aria-hidden="true"
-              width="2048"
-              height="2048"
-            />
-            <span>Acrivos Portal</span>
+            <span>Portal Dashboard</span>
           </div>
           <ThemeToggle className="login-theme-toggle" />
         </div>
@@ -83,7 +66,7 @@ export function LoginPage() {
             <span className="login-heading-icon" aria-hidden="true"><LockKeyhole size={19} /></span>
             <span className="eyebrow">Welcome back</span>
             <h1 id="login-title">Continue to your workspace</h1>
-            <p>Use your Microsoft account to securely continue to Acrivos Portal.</p>
+            <p>Use your Microsoft account to securely continue to Portal Dashboard.</p>
           </div>
 
           <div className="microsoft-login-flow">
@@ -114,7 +97,7 @@ export function LoginPage() {
             )}
 
             <p className="login-security-note">
-              Microsoft handles your credentials. Acrivos Portal does not store your password.
+              Microsoft handles your credentials. Portal Dashboard does not store your password.
             </p>
           </div>
         </div>

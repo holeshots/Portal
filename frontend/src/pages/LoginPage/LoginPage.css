@@ -35,7 +35,6 @@
 .login-brand {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
   font: 700 20px/1 'Manrope', sans-serif;
   letter-spacing: -0.65px;
 }

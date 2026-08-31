@@ -38,7 +38,8 @@ describe('Sidebar', () => {
     expect(screen.getByText('12')).toBeInTheDocument()
     expect(screen.getByText('Alex Morgan')).toBeInTheDocument()
     expect(screen.getByText('alex.morgan@example.com')).toBeInTheDocument()
-    expect(container.querySelector('.brand-logo-image')).toHaveAttribute('alt', '')
+    expect(screen.getByText('Portal Dashboard')).toBeInTheDocument()
+    expect(container.querySelector('.sidebar-brand img')).not.toBeInTheDocument()
   })
 
   it('exposes an accessible collapse control', () => {

@@ -56,7 +56,7 @@ export function Header({ onOpenMenu }: HeaderProps) {
       </button>
       <div className="topbar-title">
         <span className="eyebrow">Workspace</span>
-        <strong>Acrivos Portal</strong>
+        <strong>Portal Dashboard</strong>
       </div>
       <div className="topbar-actions">
         <button className="search-trigger" aria-label="Search">
