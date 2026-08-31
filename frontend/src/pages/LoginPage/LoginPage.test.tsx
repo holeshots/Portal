@@ -1,107 +1,123 @@
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { beforeEach, describe, expect, it } from 'vitest'
+import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { MemoryRouter, Route, Routes } from 'react-router-dom'
+import {
+  AuthenticationContext,
+  type AuthenticationContextValue,
+} from '../../auth/AuthContext'
+import { missingClientIdMessage } from '../../auth/authConfig'
 import { LoginPage } from './LoginPage'
 
-function renderLogin() {
+const signedOutAuthentication: AuthenticationContextValue = {
+  status: 'unauthenticated',
+  account: null,
+  error: null,
+  signIn: vi.fn().mockResolvedValue(undefined),
+  signOut: vi.fn().mockResolvedValue(undefined),
+}
+
+function renderLogin(
+  authentication: AuthenticationContextValue = signedOutAuthentication,
+  initialEntry: string | { pathname: string; state?: unknown } = '/login',
+) {
   return render(
-    <MemoryRouter initialEntries={['/login']}>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/" element={<h1>Dashboard preview</h1>} />
-      </Routes>
-    </MemoryRouter>,
+    <AuthenticationContext.Provider value={authentication}>
+      <MemoryRouter initialEntries={[initialEntry]}>
+        <Routes>
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/" element={<h1>Dashboard preview</h1>} />
+        </Routes>
+      </MemoryRouter>
+    </AuthenticationContext.Provider>,
   )
 }
 
-describe('LoginPage', () => {
+describe('LoginPage Microsoft sign-in boundary', () => {
   beforeEach(() => {
     window.localStorage.clear()
     document.documentElement.removeAttribute('data-theme')
+    vi.clearAllMocks()
   })
 
-  it('renders a focused login experience with persistent field labels', () => {
+  it('renders one signed-out Microsoft flow without credential fields or portal chrome', () => {
     const { container } = renderLogin()
 
-    expect(screen.getByRole('heading', { name: 'Sign in to your workspace' })).toBeInTheDocument()
-    expect(screen.getByLabelText('Work email')).toHaveAttribute('autocomplete', 'email')
-    expect(screen.getByLabelText('Password')).toHaveAttribute('autocomplete', 'current-password')
-    expect(screen.getByRole('checkbox', { name: 'Remember me' })).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: 'Forgot password?' })).toBeInTheDocument()
+    expect(screen.getByRole('heading', { name: 'Continue to your workspace' })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: 'Continue with Microsoft' })).toBeInTheDocument()
+    expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
+    expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument()
     expect(screen.queryByRole('navigation', { name: 'Primary navigation' })).not.toBeInTheDocument()
-    expect(screen.queryByRole('button', { name: 'Notifications' })).not.toBeInTheDocument()
     expect(container.querySelectorAll('.brand-logo-image')).toHaveLength(2)
-    expect(container.querySelector('.brand-logo-image')).toHaveAttribute('alt', '')
   })
 
-  it('shows actionable required-field errors and focuses the first invalid field', async () => {
-    const user = userEvent.setup()
-    renderLogin()
+  it('announces MSAL initialization and prevents a second interaction', () => {
+    renderLogin({ ...signedOutAuthentication, status: 'initializing' })
 
-    await user.click(screen.getByRole('button', { name: 'Sign in' }))
-
-    const email = screen.getByLabelText('Work email')
-    const password = screen.getByLabelText('Password')
-    expect(screen.getByText('Enter your work email address.')).toBeInTheDocument()
-    expect(screen.getByText('Enter your password.')).toBeInTheDocument()
-    expect(email).toHaveAttribute('aria-invalid', 'true')
-    expect(password).toHaveAttribute('aria-invalid', 'true')
-    expect(email).toHaveFocus()
+    expect(screen.getByRole('status')).toHaveTextContent('Checking your Microsoft session…')
+    expect(screen.queryByRole('button', { name: 'Continue with Microsoft' })).not.toBeInTheDocument()
   })
 
-  it('validates the email format with a useful example', async () => {
-    const user = userEvent.setup()
-    renderLogin()
+  it('shows an accessible configuration error without fake fallback authentication', () => {
+    renderLogin({
+      ...signedOutAuthentication,
+      status: 'configuration-error',
+      error: missingClientIdMessage,
+    })
 
-    await user.type(screen.getByLabelText('Work email'), 'not-an-email')
-    await user.type(screen.getByLabelText('Password'), 'demo-password')
-    await user.click(screen.getByRole('button', { name: 'Sign in' }))
-
-    expect(screen.getByText('Enter a valid email address, such as name@company.com.')).toBeInTheDocument()
-    expect(screen.getByLabelText('Work email')).toHaveFocus()
+    expect(screen.getByRole('alert')).toHaveTextContent(missingClientIdMessage)
+    expect(screen.getByRole('button', { name: 'Continue with Microsoft' })).toBeDisabled()
   })
 
-  it('supports keyboard navigation and toggles password visibility with Enter', async () => {
+  it('starts redirect sign-in with the protected destination', async () => {
     const user = userEvent.setup()
-    renderLogin()
+    const signIn = vi.fn().mockResolvedValue(undefined)
+    renderLogin(
+      { ...signedOutAuthentication, signIn },
+      { pathname: '/login', state: { from: '/tickets?status=New' } },
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Continue with Microsoft' }))
+
+    expect(signIn).toHaveBeenCalledWith('/tickets?status=New')
+    expect(screen.getByRole('button', { name: 'Redirecting to Microsoft…' })).toBeDisabled()
+  })
+
+  it('falls back to the dashboard for a suspicious return path', async () => {
+    const user = userEvent.setup()
+    const signIn = vi.fn().mockResolvedValue(undefined)
+    renderLogin(
+      { ...signedOutAuthentication, signIn },
+      { pathname: '/login', state: { from: '/%5C%5Cmalicious.example/path' } },
+    )
+
+    await user.click(screen.getByRole('button', { name: 'Continue with Microsoft' }))
+
+    expect(signIn).toHaveBeenCalledWith('/')
+  })
+
+  it('supports keyboard activation and displays a cancelled or failed sign-in message', async () => {
+    const user = userEvent.setup()
+    const error = 'Microsoft sign-in was cancelled or could not be completed. Please try again.'
+    renderLogin({ ...signedOutAuthentication, error })
 
     await user.tab()
     expect(screen.getByRole('button', { name: 'Switch to dark mode' })).toHaveFocus()
     await user.tab()
-    expect(screen.getByLabelText('Work email')).toHaveFocus()
-    await user.tab()
-    expect(screen.getByLabelText('Password')).toHaveFocus()
-    await user.tab()
-    expect(screen.getByRole('button', { name: 'Show password' })).toHaveFocus()
-
+    expect(screen.getByRole('button', { name: 'Continue with Microsoft' })).toHaveFocus()
     await user.keyboard('{Enter}')
 
-    expect(screen.getByLabelText('Password')).toHaveAttribute('type', 'text')
-    expect(screen.getByRole('button', { name: 'Hide password' })).toHaveAttribute('aria-pressed', 'true')
+    expect(signedOutAuthentication.signIn).toHaveBeenCalledWith('/')
+    expect(screen.getByRole('alert')).toHaveTextContent(error)
   })
 
-  it('navigates to the dashboard preview after a valid demo submission', async () => {
-    const user = userEvent.setup()
-    renderLogin()
-
-    await user.type(screen.getByLabelText('Work email'), 'jed@acrivos.example')
-    await user.type(screen.getByLabelText('Password'), 'demo-password')
-    await user.click(screen.getByRole('button', { name: 'Sign in' }))
+  it('redirects an authenticated account away from the login route', () => {
+    renderLogin({
+      ...signedOutAuthentication,
+      status: 'authenticated',
+      account: { name: 'Alex Morgan', username: 'alex@example.com' },
+    })
 
     expect(screen.getByRole('heading', { name: 'Dashboard preview' })).toBeInTheDocument()
-  })
-
-  it('announces clearly that password recovery is not connected yet', async () => {
-    const user = userEvent.setup()
-    renderLogin()
-    const forgotPassword = screen.getByRole('button', { name: 'Forgot password?' })
-
-    forgotPassword.focus()
-    await user.keyboard('{Enter}')
-
-    expect(screen.getByRole('status')).toHaveTextContent(
-      'Password recovery will be available when authentication is connected.',
-    )
   })
 })

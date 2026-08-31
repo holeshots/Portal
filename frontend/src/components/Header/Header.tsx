@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
 import { Bell, LogOut, Menu, Search, UserCog } from 'lucide-react'
-import { useNavigate } from 'react-router-dom'
+import { getAccountDisplayName, getAccountInitials, useAuthentication } from '../../auth/AuthContext'
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle'
 
 interface HeaderProps {
@@ -8,7 +8,9 @@ interface HeaderProps {
 }
 
 export function Header({ onOpenMenu }: HeaderProps) {
-  const navigate = useNavigate()
+  const { account, signOut } = useAuthentication()
+  const displayName = getAccountDisplayName(account)
+  const initials = getAccountInitials(account)
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false)
   const profileMenuRef = useRef<HTMLDivElement>(null)
   const profileTriggerRef = useRef<HTMLButtonElement>(null)
@@ -44,7 +46,7 @@ export function Header({ onOpenMenu }: HeaderProps) {
 
   const handleSignOut = () => {
     setIsProfileMenuOpen(false)
-    navigate('/login')
+    void signOut().catch(() => undefined)
   }
 
   return (
@@ -72,13 +74,13 @@ export function Header({ onOpenMenu }: HeaderProps) {
             ref={profileTriggerRef}
             className="header-avatar"
             type="button"
-            aria-label="User menu for Jed Turqueza"
+            aria-label={`User menu for ${displayName}`}
             aria-haspopup="menu"
             aria-expanded={isProfileMenuOpen}
             aria-controls="header-profile-menu"
             onClick={() => setIsProfileMenuOpen((isOpen) => !isOpen)}
           >
-            JT
+            {initials}
           </button>
           {isProfileMenuOpen && (
             <div
@@ -88,12 +90,11 @@ export function Header({ onOpenMenu }: HeaderProps) {
               aria-label="User account"
             >
               <div className="profile-menu-identity">
-                <strong>Jed Turqueza</strong>
-                <span>MSP Administrator</span>
+                <strong>{displayName}</strong>
+                <span>{account?.username}</span>
               </div>
               <div className="profile-menu-separator" role="separator" />
               <button
-                ref={signOutRef}
                 className="profile-menu-item"
                 type="button"
                 role="menuitem"

@@ -153,157 +153,78 @@
   line-height: 1.55;
 }
 
-.login-form { display: grid; gap: 20px; }
+.microsoft-login-flow { display: grid; gap: 16px; }
 
-.form-field { display: grid; gap: 8px; }
-
-.form-field label {
+.microsoft-login-button {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 0 20px;
+  color: #fff;
+  background: #2563a7;
+  border: 1px solid #2563a7;
+  border-radius: 9px;
+  box-shadow: 0 8px 18px rgb(20 81 148 / 16%);
   font-size: 13px;
   font-weight: 700;
+  cursor: pointer;
+  transition: background 160ms, border-color 160ms, box-shadow 160ms, transform 160ms;
 }
 
-.form-field input:not([type='checkbox']) {
-  width: 100%;
-  height: 49px;
-  padding: 0 14px;
-  color: var(--ink);
+.microsoft-login-button:hover:not(:disabled) { background: #1f5796; border-color: #1f5796; }
+.microsoft-login-button:active:not(:disabled) { transform: translateY(1px); }
+.microsoft-login-button:disabled { opacity: 0.58; cursor: not-allowed; box-shadow: none; }
+
+.microsoft-mark {
+  width: 18px;
+  height: 18px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 2px;
+  padding: 2px;
+  background: #fff;
+  border-radius: 2px;
+}
+
+.microsoft-mark span:nth-child(1) { background: #f25022; }
+.microsoft-mark span:nth-child(2) { background: #7fba00; }
+.microsoft-mark span:nth-child(3) { background: #00a4ef; }
+.microsoft-mark span:nth-child(4) { background: #ffb900; }
+
+.login-auth-error {
+  display: grid;
+  gap: 4px;
+  padding: 13px 14px;
+  color: var(--error-text);
+  background: var(--error-bg);
+  border: 1px solid var(--error-line);
+  border-radius: 9px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.login-auth-error strong { font-size: 13px; }
+
+.login-auth-progress {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: var(--muted);
   background: var(--surface);
   border: 1px solid var(--line);
   border-radius: 9px;
-  outline: none;
-  transition: border-color 160ms, box-shadow 160ms, background 160ms;
-}
-
-.form-field input::placeholder { color: color-mix(in srgb, var(--muted) 78%, transparent); }
-
-.form-field input:not([type='checkbox']):hover { border-color: color-mix(in srgb, var(--muted) 58%, var(--line)); }
-
-.form-field input:not([type='checkbox']):focus {
-  border-color: var(--accent);
-  box-shadow: 0 0 0 3px rgb(15 169 118 / 15%);
-}
-
-.form-field input[aria-invalid='true'] {
-  border-color: var(--error-text);
-  box-shadow: 0 0 0 3px color-mix(in srgb, var(--error-text) 12%, transparent);
-}
-
-.password-input-wrap { position: relative; }
-.password-input-wrap input { padding-right: 52px !important; }
-
-.password-toggle {
-  position: absolute;
-  top: 3px;
-  right: 3px;
-  width: 43px;
-  height: 43px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  color: var(--icon-color);
-  background: transparent;
-  border: 0;
-  border-radius: 7px;
-  cursor: pointer;
-}
-
-.password-toggle:hover { color: var(--accent-dark); background: var(--surface-hover); }
-
-.field-error {
-  display: flex;
-  align-items: flex-start;
-  gap: 7px;
-  margin: 0;
-  color: var(--error-text);
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.field-error span {
-  width: 16px;
-  height: 16px;
-  display: inline-grid;
-  place-items: center;
-  flex: 0 0 16px;
-  margin-top: 1px;
-  color: var(--error-bg);
-  background: var(--error-text);
-  border-radius: 50%;
-  font-size: 10px;
-  font-weight: 800;
-}
-
-.login-form-options {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 18px;
-  margin-top: -2px;
-}
-
-.remember-option {
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  color: var(--muted);
   font-size: 13px;
-  cursor: pointer;
 }
 
-.remember-option input {
-  width: 18px;
-  height: 18px;
+.login-security-note {
   margin: 0;
-  accent-color: var(--accent-dark);
-  cursor: pointer;
-}
-
-.forgot-password-button {
-  min-height: 44px;
-  padding: 0;
-  color: var(--accent-dark);
-  background: transparent;
-  border: 0;
-  font-size: 13px;
-  font-weight: 700;
-  cursor: pointer;
-}
-
-.forgot-password-button:hover { text-decoration: underline; text-underline-offset: 3px; }
-
-.demo-feedback {
-  margin: -6px 0 0;
-  padding: 11px 13px;
-  color: var(--muted);
-  background: var(--surface-muted);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  font-size: 12px;
-  line-height: 1.45;
-}
-
-.login-submit {
-  min-height: 49px;
-  padding: 0 18px;
-  color: #f1fff9;
-  background: #0c805c;
-  border: 1px solid #0c805c;
-  border-radius: 9px;
-  box-shadow: 0 8px 18px rgb(5 105 74 / 14%);
-  font-weight: 700;
-  cursor: pointer;
-  transition: background 160ms, border-color 160ms, transform 160ms;
-}
-
-.login-submit:hover { background: #086d4e; border-color: #086d4e; }
-.login-submit:active { transform: translateY(1px); }
-
-.login-demo-note {
-  margin: -6px 0 0;
   color: var(--muted);
   font-size: 11px;
-  line-height: 1.45;
+  line-height: 1.55;
   text-align: center;
 }
 
@@ -314,14 +235,8 @@
   text-align: center;
 }
 
-:root[data-theme='dark'] .login-submit {
-  color: #08251d;
-  background: #62d5ac;
-  border-color: #62d5ac;
-  box-shadow: 0 8px 20px rgb(0 0 0 / 25%);
-}
-
-:root[data-theme='dark'] .login-submit:hover { background: #7be0bb; border-color: #7be0bb; }
+:root[data-theme='dark'] .microsoft-login-button { background: #4c8dce; border-color: #4c8dce; }
+:root[data-theme='dark'] .microsoft-login-button:hover:not(:disabled) { background: #62a0dc; border-color: #62a0dc; }
 
 @media (max-width: 980px) {
   .login-page { grid-template-columns: minmax(300px, 0.78fr) minmax(430px, 1.22fr); }
@@ -346,7 +261,4 @@
   .login-form-shell { padding: 42px 0 28px; }
   .login-heading { margin-bottom: 28px; }
   .login-heading h1 { font-size: 27px; }
-  .login-form { gap: 18px; }
-  .login-form-options { align-items: flex-start; }
-  .forgot-password-button { text-align: right; }
 }

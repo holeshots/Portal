@@ -1,19 +1,19 @@
 import { ArrowUpRight, Check, Clock3, FileText, Search, Users } from 'lucide-react'
-import { useNavigate } from "react-router-dom"
-
+import { useNavigate } from 'react-router-dom'
+import { getAccountGivenName, useAuthentication } from '../auth/AuthContext'
 
 export function DashboardPage() {
-
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const { account } = useAuthentication()
   return (
     <>
           <section className="welcome-panel" aria-labelledby="welcome-title">
             <div>
               <span className="welcome-kicker">Thursday, August 27</span>
-              <h1 id="welcome-title">Good morning, Jed.</h1>
+              <h1 id="welcome-title">Good morning, {getAccountGivenName(account)}.</h1>
               <p>Your workspace is ready. Here’s what needs your attention today.</p>
             </div>
-            <button className="primary-button" onClick={() => navigate("/tickets")}><Search size={18} /> View tickets</button>
+            <button className="primary-button" onClick={() => navigate('/tickets')}><Search size={18} /> View tickets</button>
           </section>
 
           <section className="summary-grid" aria-label="Workspace summary">
