@@ -34,6 +34,7 @@ describe('Header', () => {
   it('announces the visible signed-in identity', () => {
     renderHeader()
 
+    expect(screen.getByText('Portal Dashboard')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: 'User menu for Alex Morgan' })).toHaveTextContent('AM')
   })
 

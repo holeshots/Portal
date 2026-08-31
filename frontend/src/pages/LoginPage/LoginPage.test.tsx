@@ -48,7 +48,9 @@ describe('LoginPage Microsoft sign-in boundary', () => {
     expect(screen.queryByRole('textbox')).not.toBeInTheDocument()
     expect(screen.queryByLabelText(/password/i)).not.toBeInTheDocument()
     expect(screen.queryByRole('navigation', { name: 'Primary navigation' })).not.toBeInTheDocument()
-    expect(container.querySelectorAll('.brand-logo-image')).toHaveLength(2)
+    expect(screen.getAllByText('Portal Dashboard')).toHaveLength(2)
+    expect(screen.getByRole('region', { name: 'Portal Dashboard introduction' })).toBeInTheDocument()
+    expect(container.querySelector('.login-page img')).not.toBeInTheDocument()
   })
 
   it('announces MSAL initialization and prevents a second interaction', () => {

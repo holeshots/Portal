@@ -1,10 +1,6 @@
-# Acrivos Portal
+# Portal Dashboard
 
 A responsive MSP operations portal demo inspired by the Dasher layout. The current experience includes the portal shell, Microsoft sign-in, and a simulated Ticketing workspace. Charting and production integrations are intentionally omitted.
-
-## Dashboard preview
-
-![Acrivos Portal dashboard showing the branded navigation, workspace summary, and priority activity](docs/images/dashboard-preview.jpg)
 
 ## Demo scope
 
