@@ -12,7 +12,7 @@ import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { AuthenticationProvider } from './AuthenticationProvider'
 import { useAuthentication } from './AuthContext'
 import {
-  MICROSOFT_COMMON_AUTHORITY,
+  MICROSOFT_CONSUMERS_AUTHORITY,
   MICROSOFT_LOGIN_SCOPES,
   createMsalConfiguration,
   missingClientIdMessage,
@@ -109,7 +109,7 @@ describe('MSAL configuration and provider boundary', () => {
     vi.clearAllMocks()
   })
 
-  it('uses the common authority, session storage, and origin-based redirects', () => {
+  it('uses the personal-account authority, session storage, and origin-based redirects', () => {
     const configuration = createMsalConfiguration(
       '11111111-1111-1111-1111-111111111111',
       'https://portal.example.com',
@@ -117,7 +117,7 @@ describe('MSAL configuration and provider boundary', () => {
 
     expect(configuration.auth).toMatchObject({
       clientId: '11111111-1111-1111-1111-111111111111',
-      authority: MICROSOFT_COMMON_AUTHORITY,
+      authority: MICROSOFT_CONSUMERS_AUTHORITY,
       redirectUri: 'https://portal.example.com',
       postLogoutRedirectUri: 'https://portal.example.com',
     })

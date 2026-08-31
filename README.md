@@ -8,7 +8,7 @@ A responsive MSP operations portal demo inspired by the Dasher layout. The curre
 
 ## Demo scope
 
-- `/login` uses Microsoft Authentication Library (MSAL) redirect sign-in for work, school, and personal Microsoft accounts.
+- `/login` uses Microsoft Authentication Library (MSAL) redirect sign-in for personal Microsoft accounts.
 - Portal routes require an MSAL account in the browser. This client-side route boundary improves navigation but does not replace server-side authorization.
 - `/tickets` uses realistic in-memory data. Search and filters, ticket details, assignment/status/severity changes, and internal notes are simulated and reset on refresh.
 - The ASP.NET Core API currently supplies portal navigation only. Tickets are not persisted or sent to the API.
@@ -42,13 +42,13 @@ Open `http://localhost:5173`. Vite proxies `/api` to the API at `http://localhos
 
 ### Microsoft Entra setup
 
-Register a single-page application in Microsoft Entra and configure it to support organizational directories and personal Microsoft accounts. Add `http://localhost:5173` as a SPA redirect URI, then set its public Application (client) ID in `frontend/.env.local`:
+Register a single-page application in Microsoft Entra and set its supported account type to **Personal Microsoft accounts only**. Add `http://localhost:5173` as a SPA redirect URI, copy `frontend/.env.example` to `frontend/.env.local`, then set its public Application (client) ID:
 
 ```dotenv
 VITE_MSAL_CLIENT_ID=your-application-client-id
 ```
 
-The frontend uses the Microsoft `common` authority, redirect-based sign-in, and `sessionStorage`. The client ID is public configuration; do not add a client secret. Phase 1 does not request Microsoft Graph data or send Microsoft tokens to the Acrivos API.
+The frontend uses the Microsoft `consumers` authority, redirect-based sign-in, and `sessionStorage`. The client ID is public configuration; do not add a client secret. Phase 1 does not request Microsoft Graph data or send Microsoft tokens to the Acrivos API, and the ASP.NET Core API remains unprotected.
 
 ## Verify
 

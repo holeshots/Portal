@@ -1,6 +1,6 @@
 import { BrowserCacheLocation, type Configuration } from '@azure/msal-browser'
 
-export const MICROSOFT_COMMON_AUTHORITY = 'https://login.microsoftonline.com/common'
+export const MICROSOFT_CONSUMERS_AUTHORITY = 'https://login.microsoftonline.com/consumers'
 export const MICROSOFT_LOGIN_SCOPES = ['openid', 'profile', 'email']
 
 export const missingClientIdMessage =
@@ -15,7 +15,7 @@ export function createMsalConfiguration(clientId: string, origin = window.locati
   return {
     auth: {
       clientId,
-      authority: MICROSOFT_COMMON_AUTHORITY,
+      authority: MICROSOFT_CONSUMERS_AUTHORITY,
       redirectUri: origin,
       postLogoutRedirectUri: origin,
     },
