@@ -1,12 +1,17 @@
 # Portal Dashboard
 
-A responsive MSP operations portal demo inspired by the Dasher layout. The current experience includes the portal shell, Microsoft sign-in, and a simulated Ticketing workspace. Charting and production integrations are intentionally omitted.
+A responsive MSP operations portal demo inspired by the Dasher layout. The current experience includes Microsoft sign-in and interactive demo workspaces for service desk operations. Production integrations and persistence are intentionally omitted.
+
+## Project teaser
+
+![Portal Dashboard showing the MSP workspace navigation, service summary, and priority checklist](docs/images/dashboard-preview.png)
 
 ## Demo scope
 
 - `/login` uses Microsoft Authentication Library (MSAL) redirect sign-in for personal Microsoft accounts.
 - Portal routes require an MSAL account in the browser. This client-side route boundary improves navigation but does not replace server-side authorization.
 - `/tickets` uses realistic in-memory data. Search and filters, ticket details, assignment/status/severity changes, and internal notes are simulated and reset on refresh.
+- `/devices`, `/clients`, `/365`, `/reports`, `/messages`, and `/settings` provide interactive frontend demonstrations backed by mock data and local state.
 - The ASP.NET Core API currently supplies portal navigation only. Tickets are not persisted or sent to the API.
 - API authorization, a database, attachments, notifications, SLA calculations, vendor integrations, and real-time updates are future production work.
 
