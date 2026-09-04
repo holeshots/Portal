@@ -4,10 +4,15 @@ import { MemoryRouter, useNavigate } from 'react-router-dom'
 import userEvent from '@testing-library/user-event'
 import App from './App'
 import { AuthenticationContext, type AuthenticationContextValue } from './auth/AuthContext'
-import { MODULE_PLACEHOLDERS } from './pages/ModulePlaceholderPage/modulePlaceholders'
 import type { NavigationItem } from './types/navigation'
 
-const placeholderModules = MODULE_PLACEHOLDERS.filter(({ path }) => path !== '/clients')
+const demoModules = [
+  { path: '/devices', title: 'Devices' },
+  { path: '/365', title: 'Microsoft 365' },
+  { path: '/reports', title: 'Reports' },
+  { path: '/messages', title: 'Messages' },
+  { path: '/settings', title: 'Settings' },
+] as const
 
 const navigationItems: NavigationItem[] = [
   { id: 'dashboard', label: 'Dashboard', path: '/', icon: 'grid', section: 'Overview' },
@@ -147,24 +152,23 @@ describe('App routing', () => {
     expect(screen.queryByRole('menu')).not.toBeInTheDocument()
   })
 
-  it.each(placeholderModules)(
-    'supports direct navigation to $path and marks $title active',
+  it.each(demoModules)(
+    'supports direct navigation to the $title demo and marks it active',
     async ({ path, title }) => {
       stubNavigation()
       renderAppAt(path)
 
       expect(screen.getByRole('heading', { name: title, level: 1 })).toBeInTheDocument()
-      expect(screen.getByText('Coming soon')).toBeInTheDocument()
-      expect(screen.getByRole('link', { name: 'Back to Dashboard' })).toHaveAttribute('href', '/')
-      expect(screen.getByRole('link', { name: 'Open Tickets' })).toHaveAttribute('href', '/tickets')
+      expect(screen.getByText('Demo data · resets on refresh')).toBeInTheDocument()
+      expect(screen.queryByText('Coming soon')).not.toBeInTheDocument()
 
       const activeItem = await screen.findByRole('button', { name: title })
       expect(activeItem).toHaveAttribute('aria-current', 'page')
     },
   )
 
-  it.each(placeholderModules)(
-    'navigates from the sidebar to the $title placeholder',
+  it.each(demoModules)(
+    'navigates from the sidebar to the $title demo',
     async ({ title }) => {
       const user = userEvent.setup()
       stubNavigation()
